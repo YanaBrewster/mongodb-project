@@ -36,14 +36,15 @@ app.get('/allProducts', (req,res)=>{
   res.json(product)
 });
 
-// app.get('/products/p=:id', (req,res) =>{
-// const idParam = req .params.id;
-//   for (let i = 0; i < product.length; i++){
-//     if (idParam === product[i].id) {
-//       res.json(product[i].id);
-//     }
-//   }
-// })
+app.get('/products/p=:id', (req,res) =>{
+const idParam = req.params.id;
+  for (let i = 0; i < product.length; i++){
+    if (idParam.toString() === product[i].id.toString()) {
+      res.json(product[i]);
+    }
+  }
+})
+
 
 // keep this at the end so errors can be seen
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
