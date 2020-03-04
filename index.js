@@ -8,6 +8,7 @@ const config = require('./config.json'); // store creditials
 const product = require('./products.json'); // external json data
 const dbProduct = require('./models/products.js');
 const User = require('./models/users.js');
+const Product = require('./models/products.js');
 
 const port = 3000;
 // connect to db
@@ -40,6 +41,8 @@ app.use(cors());
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
+// parameters
+
 app.get('/allProducts', (req,res)=>{
   res.json(product)
 });
@@ -48,6 +51,24 @@ app.get('/products/p=:id', (req,res) =>{
 const idParam = req.params.id;
   for (let i = 0; i < product.length; i++){
     if (idParam.toString() === product[i].id.toString()) {
+      res.json(product[i]);
+    }
+  }
+});
+
+app.get('/products/n=:name', (req,res) =>{
+const nameParam = req.params.name;
+  for (let i = 0; i < product.length; i++){
+    if (nameParam.toLowerCase() === product[i].name.toLowerCase()) {
+      res.json(product[i]);
+    }
+  }
+});
+
+app.get('/products/pr=:price', (req,res) =>{
+const priceParam = req.params.price;
+  for (let i = 0; i < product.length; i++){
+    if (priceParam.toString() === product[i].price.toString()) {
       res.json(product[i]);
     }
   }
