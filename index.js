@@ -47,8 +47,8 @@ app.get('/allProducts', (req,res)=>{
   res.json(product)
 });
 
-app.get('/products/p=:id', (req,res) =>{
-const idParam = req.params.id;
+app.get('/products/id=:id', (req,res) =>{
+  const idParam = req.params.id;
   for (let i = 0; i < product.length; i++){
     if (idParam.toString() === product[i].id.toString()) {
       res.json(product[i]);
@@ -57,7 +57,7 @@ const idParam = req.params.id;
 });
 
 app.get('/products/n=:name', (req,res) =>{
-const nameParam = req.params.name;
+  const nameParam = req.params.name;
   for (let i = 0; i < product.length; i++){
     if (nameParam.toLowerCase() === product[i].name.toLowerCase()) {
       res.json(product[i]);
@@ -66,7 +66,7 @@ const nameParam = req.params.name;
 });
 
 app.get('/products/pr=:price', (req,res) =>{
-const priceParam = req.params.price;
+  const priceParam = req.params.price;
   for (let i = 0; i < product.length; i++){
     if (priceParam.toString() === product[i].price.toString()) {
       res.json(product[i]);
@@ -101,7 +101,7 @@ app.post('/registerUser', (req,res) =>{
 
 app.get('/allUsers', (req,res) =>{
   User.find().then(result =>{
-      res.send(result);
+    res.send(result);
   })
 });
 
@@ -120,6 +120,106 @@ app.post('/loginUser', (req,res) =>{
     }
   });
 });
+
+// ----------------------------------------------------------
+
+// / delete a user
+
+app.delete('/deleteUser/:id',(req,res)=>{
+  const idParam = req.params.id;
+  User.findOne({_id:idParam}, (err,product)=>{
+    if (product){
+      User.deleteOne({_id:idParam},err=>{
+        res.send('deleted');
+      });
+    } else {
+      res.send('not found');
+    }
+  }).catch(err => res.send(err)); //refers to mogodb id
+});
+
+// edit a product
+
+app.patch('/updateUser/:id',(req,res)=>{
+  const idParam = req.params.id;
+  User.findById(idParam,(err,product) =>{
+    const updatedUser ={
+      name:req.body.name,
+      price:req.body.price
+    };
+    User.updateOne({_id:idParam}, updatedUser).then(result=>{
+      res.send(result);
+    }).catch(err=> res.send(err));
+
+  }).catch(err=>res.send('not found'));
+
+});
+
+// ----------------------------------------------------------
+
+//product input/add
+
+app.post('/addProduct', (req,res) =>{
+  //checking if product is found in the db already
+  Product.findOne({name:req.body.name},(err,productResult)=>{
+    if (productResult){
+      res.send('Product already added');
+    } else{
+      const product = new Product({
+        _id : new mongoose.Types.ObjectId,
+        name : req.body.name,
+        price : req.body.price
+      });
+
+      product.save().then(result =>{
+        res.send(result);
+      }).catch(err => res.send(err));
+    }
+  })
+});
+
+// get all products
+
+app.get('/allDBProducts', (req,res) =>{
+  Product.find().then(result =>{
+    res.send(result);
+  })
+});
+
+// -----------------------------------------------------------
+
+// delete a product
+
+app.delete('/deleteProduct/:id',(req,res)=>{
+  const idParam = req.params.id;
+  Product.findOne({_id:idParam}, (err,product)=>{
+    if (product){
+      Product.deleteOne({_id:idParam},err=>{
+        res.send('deleted');
+      });
+    } else {
+      res.send('not found');
+    }
+  }).catch(err => res.send(err)); //refers to mogodb id
+});
+
+// edit a product
+
+app.patch('/updateProduct/:id',(req,res)=>{
+  const idParam = req.params.id;
+  Product.findById(idParam,(err,product) =>{
+    const updatedProduct ={
+      name:req.body.name,
+      price:req.body.price
+    };
+    Product.updateOne({_id:idParam}, updatedProduct).then(result=>{
+      res.send(result);
+    }).catch(err=> res.send(err));
+
+  }).catch(err=>res.send('not found'));
+
+});
+
 
 // keep this at the end so errors can be seen
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
