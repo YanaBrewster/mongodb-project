@@ -2,26 +2,69 @@
 
 ## To run this project you need nodejs installed
 
-1. git clone https://github.com/YanaBrewster/mongodb-project.git
-2. cd into MongoDB-project in the terminal
-3. enter in: npm i
-4. type the following in the terminal: nodemon -L index.js
-6. access the project via your localhost (example; localhost:3000) or get data using the Postman app
+This is our backend. You need front-end to run this project. Alternatively, use Postman to monitor the request and response.
 
-Using the Postman app, append the a link (see below) to access data from MongoDB:
+Step 1 – Clone this project to www or htdocs folder
+git clone https://github.com/YanaBrewster/mongodb-project.git
 
-POST '/registerUser'
-GET '/allUsers'
-POST '/loginUser'
+Step 2 – Install packages
+npm i
 
+Step 3 – Mongodb
+You should have a mongodb account. The URI connection string needs username, password and cluster name with attached id. If not, create an account and get the uri string from https://www.mongodb.com/
 
-Select 'Body' > 'raw' and 'JSON' in the Postman app
-Input the data parameters stated below and send.
+Copy the config-copy.json file and rename it to config.json and add your username, password and clustername with its id.
 
-example:
+Step 4 - Run the project
+You should have installed nodemon globally. if not run npm install nodemon -g
 
-{
-"username" : "Yoobee",
-"email" : "yoobee@colleges.com",
-"password" : "password"
-}
+use the legacy version in vagrant set up
+nodemon -L index.js
+
+use this in non-vagrant set up
+nodemon index.js
+
+Step 5 - To see the home page
+localhost:3000 or use ip in the place of localhost
+
+Step 6 - Endpoints
+
+Endpoints
+/allProducts
+view all products from json file
+GET
+
+/products/p=
+view a product by id from json file	number
+GET
+
+/registerUser
+add a new user to db
+POST
+
+/allUsers
+view all users from db
+GET
+
+/loginUser
+check for existing userto login
+POST
+
+/allProductsFromDB
+view all products from db
+GET
+
+/addProduct
+add a product in db
+POST
+
+/updateProduct/
+modify a product using id	ObjectId
+PATCH
+
+/deleteProduct/
+remove a product using id	ObjectId
+DELETE
+
+Step 7 - Mongodb
+To see data being posted,updated or deleted, click on cluster->collections->shop->users or products respectively
