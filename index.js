@@ -168,7 +168,8 @@ app.post('/addProduct', (req,res) =>{
       const product = new Product({
         _id : new mongoose.Types.ObjectId,
         name : req.body.name,
-        price : req.body.price
+        price : req.body.price,
+        user_id : req.body.userId
       });
 
       product.save().then(result =>{
@@ -210,7 +211,8 @@ app.patch('/updateProduct/:id',(req,res)=>{
   Product.findById(idParam,(err,product) =>{
     const updatedProduct ={
       name:req.body.name,
-      price:req.body.price
+      price:req.body.price,
+      user_id:req.body.userId
     };
     Product.updateOne({_id:idParam}, updatedProduct).then(result=>{
       res.send(result);
